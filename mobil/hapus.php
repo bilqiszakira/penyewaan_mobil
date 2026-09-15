@@ -1,0 +1,1 @@
+<?php include '../auth/cek_login.php';include '../koneksi.php';$id=(int)($_GET['id']??0);$s=mysqli_prepare($conn,'DELETE FROM mobil WHERE id=?');mysqli_stmt_bind_param($s,'i',$id);mysqli_stmt_execute($s);header('Location: index.php');exit;?>
