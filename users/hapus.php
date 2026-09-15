@@ -1,0 +1,1 @@
+<?php include '../auth/cek_login.php';if($_SESSION['role']!='admin')die('Akses ditolak');include '../koneksi.php';$id=(int)$_GET['id'];if($id!=$_SESSION['id'])mysqli_query($conn,"DELETE FROM users WHERE id=$id");header('Location:index.php');exit;?>
