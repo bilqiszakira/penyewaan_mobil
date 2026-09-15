@@ -1,0 +1,9 @@
+CREATE DATABASE IF NOT EXISTS penyewaan_mobil; USE penyewaan_mobil;
+CREATE TABLE users(id INT AUTO_INCREMENT PRIMARY KEY,username VARCHAR(50) UNIQUE NOT NULL,password VARCHAR(255) NOT NULL,nama VARCHAR(100) NOT NULL,role ENUM('admin','petugas') NOT NULL DEFAULT 'petugas');
+INSERT INTO users(username,password,nama,role) VALUES('admin',MD5('admin123'),'Administrator','admin'),('petugas',MD5('petugas123'),'Petugas','petugas');
+CREATE TABLE mobil(id INT AUTO_INCREMENT PRIMARY KEY,nomor_polisi VARCHAR(20) UNIQUE NOT NULL,merk VARCHAR(50) NOT NULL,tipe VARCHAR(50) NOT NULL,tahun INT NOT NULL,warna VARCHAR(30) NOT NULL,harga_sewa INT NOT NULL,status ENUM('Tersedia','Disewa') NOT NULL DEFAULT 'Tersedia');
+INSERT INTO mobil(nomor_polisi,merk,tipe,tahun,warna,harga_sewa) VALUES('BA 1234 AA','Toyota','Avanza',2022,'Hitam',300000),('BA 5678 BB','Honda','Brio',2023,'Putih',250000),('BA 9012 CC','Toyota','Innova',2021,'Silver',450000);
+CREATE TABLE pelanggan(id INT AUTO_INCREMENT PRIMARY KEY,nik VARCHAR(30) UNIQUE NOT NULL,nama VARCHAR(100) NOT NULL,alamat TEXT NOT NULL,no_hp VARCHAR(20) NOT NULL);
+INSERT INTO pelanggan(nik,nama,alamat,no_hp) VALUES('137100000001','Andi Saputra','Padang','081234567890'),('137100000002','Budi Santoso','Padang','082345678901');
+CREATE TABLE transaksi(id INT AUTO_INCREMENT PRIMARY KEY,kode_transaksi VARCHAR(30) UNIQUE NOT NULL,id_pelanggan INT NOT NULL,id_mobil INT NOT NULL,tanggal_sewa DATE NOT NULL,tanggal_rencana_kembali DATE NOT NULL,harga_per_hari INT NOT NULL,lama_sewa INT NOT NULL,total_harga INT NOT NULL,status ENUM('Disewa','Dikembalikan') NOT NULL DEFAULT 'Disewa',FOREIGN KEY(id_pelanggan) REFERENCES pelanggan(id),FOREIGN KEY(id_mobil) REFERENCES mobil(id));
+CREATE TABLE pengembalian(id INT AUTO_INCREMENT PRIMARY KEY,id_transaksi INT NOT NULL,tanggal_kembali DATE NOT NULL,keterlambatan INT NOT NULL DEFAULT 0,denda INT NOT NULL DEFAULT 0,catatan TEXT,FOREIGN KEY(id_transaksi) REFERENCES transaksi(id));
